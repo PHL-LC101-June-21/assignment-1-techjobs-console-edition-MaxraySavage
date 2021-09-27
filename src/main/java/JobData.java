@@ -77,9 +77,17 @@ public class JobData {
 
         for (HashMap<String, String> row : allJobs) {
 
-            String aValue = row.get(column);
+            String columnValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            boolean columnContainsValue = false;
+            for(int i = 0; i < columnValue.length() - value.length() + 1; i++){
+                if(columnValue.regionMatches(true, i, value, 0, value.length())){
+                    columnContainsValue = true;
+                    break;
+                }
+            }
+
+            if (columnContainsValue) {
                 jobs.add(row);
             }
         }
@@ -98,8 +106,27 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        // TODO - implement this method
-        return null;
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {
+            for(String column : row.keySet()) {
+                String columnValue = row.get(column);
+                boolean containsValue = false;
+                for(int i = 0; i < columnValue.length() - value.length() + 1; i++){
+                    if(columnValue.regionMatches(true, i, value, 0, value.length())){
+                        containsValue = true;
+                        break;
+                    }
+                }
+
+                if (containsValue) {
+                    jobs.add(row);
+                    break;
+                }
+            }
+        }
+
+        return jobs;
     }
 
     /**
