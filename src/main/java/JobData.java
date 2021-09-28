@@ -1,6 +1,7 @@
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -43,7 +44,36 @@ public class JobData {
         }
 
         // Bonus mission: sort the results
-        Collections.sort(values);
+
+        // implement sort
+        // selection, bubble, quick, merge, heap
+        //Collections.sort(values);
+        MySort.sort(values, "quicksort");
+
+        return values;
+    }
+
+    public static ArrayList<String> findAll(String field, String sortMethod) {
+
+        // load data, if not already loaded
+        loadData();
+
+        ArrayList<String> values = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {
+            String aValue = row.get(field);
+
+            if (!values.contains(aValue)) {
+                values.add(aValue);
+            }
+        }
+
+        // Bonus mission: sort the results
+
+        // implement sort
+        // selection, bubble, quick, merge, heap
+        //Collections.sort(values);
+        MySort.sort(values, sortMethod);
 
         return values;
     }
@@ -54,7 +84,13 @@ public class JobData {
         loadData();
 
         // Bonus mission; normal version returns allJobs
-        return new ArrayList<>(allJobs);
+
+        ArrayList<HashMap<String, String>> deepCopiedArrayList = new ArrayList<>();
+        for(HashMap<String, String> item : allJobs){
+            deepCopiedArrayList.add((HashMap<String, String>) item.clone());
+        }
+
+        return deepCopiedArrayList;
     }
 
     /**
@@ -77,9 +113,17 @@ public class JobData {
 
         for (HashMap<String, String> row : allJobs) {
 
-            String aValue = row.get(column);
+            String columnValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            boolean columnContainsValue = false;
+            for(int i = 0; i < columnValue.length() - value.length() + 1; i++){
+                if(columnValue.regionMatches(true, i, value, 0, value.length())){
+                    columnContainsValue = true;
+                    break;
+                }
+            }
+
+            if (columnContainsValue) {
                 jobs.add(row);
             }
         }
@@ -98,8 +142,27 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        // TODO - implement this method
-        return null;
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {
+            for(String column : row.keySet()) {
+                String columnValue = row.get(column);
+                boolean containsValue = false;
+                for(int i = 0; i < columnValue.length() - value.length() + 1; i++){
+                    if(columnValue.regionMatches(true, i, value, 0, value.length())){
+                        containsValue = true;
+                        break;
+                    }
+                }
+
+                if (containsValue) {
+                    jobs.add(row);
+                    break;
+                }
+            }
+        }
+
+        return jobs;
     }
 
     /**
@@ -142,5 +205,4 @@ public class JobData {
             e.printStackTrace();
         }
     }
-
 }
