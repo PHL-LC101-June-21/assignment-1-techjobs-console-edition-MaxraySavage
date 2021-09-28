@@ -1,6 +1,7 @@
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -46,7 +47,33 @@ public class JobData {
 
         // implement sort
         // selection, bubble, quick, merge, heap
-        Collections.sort(values);
+        //Collections.sort(values);
+        MySort.sort(values, "quicksort");
+
+        return values;
+    }
+
+    public static ArrayList<String> findAll(String field, String sortMethod) {
+
+        // load data, if not already loaded
+        loadData();
+
+        ArrayList<String> values = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {
+            String aValue = row.get(field);
+
+            if (!values.contains(aValue)) {
+                values.add(aValue);
+            }
+        }
+
+        // Bonus mission: sort the results
+
+        // implement sort
+        // selection, bubble, quick, merge, heap
+        //Collections.sort(values);
+        MySort.sort(values, sortMethod);
 
         return values;
     }
@@ -178,5 +205,4 @@ public class JobData {
             e.printStackTrace();
         }
     }
-
 }

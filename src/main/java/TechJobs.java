@@ -11,7 +11,6 @@ public class TechJobs {
     static Scanner in = new Scanner(System.in);
 
     public static void main (String[] args) {
-
         // Initialize our field map with key/name pairs
         HashMap<String, String> columnChoices = new HashMap<>();
         columnChoices.put("core competency", "Skill");
@@ -19,6 +18,15 @@ public class TechJobs {
         columnChoices.put("location", "Location");
         columnChoices.put("position type", "Position Type");
         columnChoices.put("all", "All");
+
+        // Sort method choices
+        HashMap<String, String> sortMethodChoices = new HashMap<>();
+        sortMethodChoices.put("bubble", "Bubble Sort");
+        sortMethodChoices.put("insertion", "Insertion Sort");
+        sortMethodChoices.put("selection", "Selection Sort");
+        sortMethodChoices.put("merge", "Merge Sort");
+        sortMethodChoices.put("heap", "Heap Sort");
+        sortMethodChoices.put("quick", "Quicksort");
 
         // Top-level menu options
         HashMap<String, String> actionChoices = new HashMap<>();
@@ -41,8 +49,8 @@ public class TechJobs {
                 if (columnChoice.equals("all")) {
                     printJobs(JobData.findAll());
                 } else {
-
-                    ArrayList<String> results = JobData.findAll(columnChoice);
+                    String sortMethodChoice = getUserSelection("Pick a sort method", sortMethodChoices);
+                    ArrayList<String> results = JobData.findAll(columnChoice, sortMethodChoice);
 
                     System.out.println("\n*** All " + columnChoices.get(columnChoice) + " Values ***");
 
