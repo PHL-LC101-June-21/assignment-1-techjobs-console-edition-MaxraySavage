@@ -43,6 +43,9 @@ public class JobData {
         }
 
         // Bonus mission: sort the results
+
+        // implement sort
+        // selection, bubble, quick, merge, heap
         Collections.sort(values);
 
         return values;
@@ -54,7 +57,13 @@ public class JobData {
         loadData();
 
         // Bonus mission; normal version returns allJobs
-        return new ArrayList<>(allJobs);
+
+        ArrayList<HashMap<String, String>> deepCopiedArrayList = new ArrayList<>();
+        for(HashMap<String, String> item : allJobs){
+            deepCopiedArrayList.add((HashMap<String, String>) item.clone());
+        }
+
+        return deepCopiedArrayList;
     }
 
     /**
